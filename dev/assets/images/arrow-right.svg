@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="120px" height="120px" viewBox="0 0 120 120" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40.1 (33804) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow-right</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Generic-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="arrow-right" fill="grey">
+            <polygon id="Shape" transform="translate(59.668966, 59.825526) rotate(-90.000000) translate(-59.668966, -59.825526) " points="20.8434392 68.7634574 59.6689655 107.494492 98.4944918 68.7634574 91.5258076 61.8117332 64.6465971 88.6255263 64.6465971 12.1565608 54.6913339 12.1565608 54.6913339 88.6255263 27.8121234 61.8117332"></polygon>
+        </g>
+    </g>
+</svg>

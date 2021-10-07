@@ -1,0 +1,23 @@
+.slideshow-title {
+    flex-basis: 33.33%;
+    font-size: 22px;
+    color: #d6d6d6;
+    text-align: left;
+    overflow: hidden;
+}
+
+.slideshow-title.hide {
+    opacity: 0;
+}
+
+.slideshow-numbers {
+    margin-top: .3em;
+    font-size: .8em;
+    white-space: nowrap;
+}
+
+.slideshow-name {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

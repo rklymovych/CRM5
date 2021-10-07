@@ -1,0 +1,122 @@
+stages:
+  - build
+  - deploy
+
+.build: &build-template
+  image: ${DOCKER_IMAGE_NODE}
+  stage: build
+  before_script:
+    - npm install
+  script:
+    - node_modules/cross-env/src/bin/cross-env.js NODE_ENV=production node_modules/webpack/bin/webpack.js --config webpack.config.js
+  artifacts:
+    paths:
+    - dist/assets
+    - dist/index.html
+  tags:
+    - avenga-light
+
+build-feature-branches:
+  <<: *build-template
+  except:
+    refs:
+      - dev
+      - staging
+      - uat
+      - master
+  when: manual
+  allow_failure: false
+
+build-static-branches:
+  <<: *build-template
+  only:
+    refs:
+      - dev
+      - staging
+      - uat
+      - master
+
+.deploy: &deploy-template
+  image: ${DOCKER_IMAGE_AWSCLI}
+  stage: deploy
+  before_script:
+    - test -n "$AWS_ACCESS_KEY_ID" || exit 1
+    - test -n "$AWS_SECRET_ACCESS_KEY" || exit 1
+    - test -n "$AWS_DEFAULT_REGION" || exit 1
+  script:
+    - |
+      if [ "$DEPLOY_S3_BUCKET_FOLDER" != "" ]; then
+        aws s3 cp --recursive ./dist s3://$DEPLOY_S3_BUCKET_NAME/$DEPLOY_S3_BUCKET_FOLDER
+        CF_INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/$DEPLOY_S3_BUCKET_FOLDER/*" | jq -r '.Invalidation.Id')
+      else
+        aws s3 cp --recursive ./dist s3://$DEPLOY_S3_BUCKET_NAME/
+        CF_INVALIDATION_ID=$(aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths "/index.html" "/assets/*" | jq -r '.Invalidation.Id')
+      fi
+
+      echo "Invalidation has been created with ID $CF_INVALIDATION_ID. Waiting for the invalidation to complete"
+
+      aws cloudfront wait invalidation-completed --id $CF_INVALIDATION_ID --distribution-id $CF_DISTRIBUTION_ID
+
+      CF_INVALIDATION_STATUS=$(aws cloudfront get-invalidation --id $CF_INVALIDATION_ID --distribution-id $CF_DISTRIBUTION_ID | jq '.Invalidation.Status')
+
+      echo "The status of Invalidation $CF_INVALIDATION_ID is $CF_INVALIDATION_STATUS"
+
+  tags: 
+    - avenga-light
+
+deploy-feature:
+  <<: *deploy-template
+  variables:
+    DEPLOY_S3_BUCKET_NAME: "$DEPLOY_FEATURE_S3_BUCKET_NAME"
+    DEPLOY_S3_BUCKET_FOLDER: "$DEPLOY_FEATURE_S3_BUCKET_FOLDER"
+    CF_DISTRIBUTION_ID: "$CF_FEATURE_DISTRIBUTION_ID"
+  except:
+    refs:
+      - dev
+      - staging
+      - uat
+      - master
+  when: manual
+
+deploy-qa:
+  <<: *deploy-template
+  variables:
+    DEPLOY_S3_BUCKET_NAME: "$DEPLOY_QA_S3_BUCKET_NAME"
+    DEPLOY_S3_BUCKET_FOLDER: "$DEPLOY_QA_S3_BUCKET_FOLDER"
+    CF_DISTRIBUTION_ID: "$CF_QA_DISTRIBUTION_ID"
+  only:
+    refs:
+      - dev
+
+deploy-staging:
+  <<: *deploy-template
+  variables:
+    DEPLOY_S3_BUCKET_NAME: "$DEPLOY_STAGING_S3_BUCKET_NAME"
+    DEPLOY_S3_BUCKET_FOLDER: "$DEPLOY_STAGING_S3_BUCKET_FOLDER"
+    CF_DISTRIBUTION_ID: "$CF_STAGING_DISTRIBUTION_ID"
+  only:
+    refs:
+      - staging
+  when: manual
+
+deploy-uat:
+  <<: *deploy-template
+  variables:
+    DEPLOY_S3_BUCKET_NAME: "$DEPLOY_UAT_S3_BUCKET_NAME"
+    DEPLOY_S3_BUCKET_FOLDER: "$DEPLOY_UAT_S3_BUCKET_FOLDER"
+    CF_DISTRIBUTION_ID: "$CF_UAT_DISTRIBUTION_ID"
+  only:
+    refs:
+      - uat
+  when: manual
+
+deploy-prod:
+  <<: *deploy-template
+  variables:
+    DEPLOY_S3_BUCKET_NAME: "$DEPLOY_PROD_S3_BUCKET_NAME"
+    DEPLOY_S3_BUCKET_FOLDER: "$DEPLOY_PROD_S3_BUCKET_FOLDER"
+    CF_DISTRIBUTION_ID: "$CF_PROD_DISTRIBUTION_ID"
+  only:
+    refs:
+      - master
+  when: manual

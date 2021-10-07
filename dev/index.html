@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CLM Player</title>
+    <!-- Remote Content Player CSS (MANDATORY, CSS rules inside have to be implemented no matter the way) -->
+    <link href="assets/css/sdk.css?v=0.1.9.29" type="text/css" rel="stylesheet" />
+    <!-- RxJS library (MANDATORY, RxJS library has to be loaded no matter the way) -->
+    <script src="assets/js/rxjs.umd.min.js"></script>
+    <!-- Remote Content Player JS SDK (MANDATORY, has to be loaded no matter the way) -->
+    <script src="assets/js/sdk.min.js?v=0.1.9.29"></script>
+    <script>
+      // Waiting for the DOM ready
+      document.addEventListener('DOMContentLoaded', () => {
+        player = new SDK.Bootstrap('player');
+        player.getPlayerJS().loadSFPresentation();
+      });
+    </script>
+</head>
+<body>
+    <div id="player"></div>
+</body>
+</html>

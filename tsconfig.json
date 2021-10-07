@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": false,
+    "outDir": "./dist",
+    "strict": true,
+    "sourceMap": true,
+    "lib": ["es5", "es2015", "dom", "scripthost"],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "strictPropertyInitialization": false,
+    "suppressImplicitAnyIndexErrors": true,
+    "strictNullChecks":false,
+    "preserveConstEnums": false,
+    "skipLibCheck": true
+  },
+  "include": [
+    "sdk"
+  ],
+  "exclude": ["node_modules", "**/__tests__/*"]
+}

@@ -1,0 +1,38 @@
+.arrow {
+    display: inline-block;
+    padding: 20px;
+    position: absolute;
+    /*z-index: 20000 !important;*/
+    background-repeat: no-repeat;
+    background-size: 50px 50px;
+    background-position: center;
+    -webkit-filter: drop-shadow( 6px 0 2px hsla(0, 0%, 0%, 0.2));
+    filter: drop-shadow( 6px 0 2px hsla(0, 0%, 0%, 0.2));
+    cursor: pointer;
+}
+
+.arrow svg {
+    /*z-index: 20000 !important;*/
+}
+
+.arrow.right {
+    background-image: url("../images/arrow-right.svg");
+    top: 49%;
+    right: 5%;
+}
+
+.arrow.left {
+    background-image: url("../images/arrow-left.svg");
+    top: 49%;
+    left: 5%;
+}
+
+.arrow.up {
+    background-image: url("../images/arrow-up.svg");
+    left: 49%;
+    bottom: 5px;
+}
+
+.arrow.down {
+    background-image: url("../images/arrow-down.svg");
+}

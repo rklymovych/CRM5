@@ -1,0 +1,80 @@
+.thumbnail {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    margin-right: 5px;
+    width: 200px;
+}
+
+.thumbnail:last-child {
+    margin-right: 0;
+}
+
+.thumbnail-inner {
+    padding: 10px 20px;
+    position: relative;
+}
+
+.thumbnail.mandatory .thumbnail-inner::before {
+    content: '*';
+    position: absolute;
+    bottom: -17px;
+    left: 4px;
+    font-size: 40px;
+    line-height: 1;
+    color: red;
+    z-index: 1;
+}
+
+.thumbnail.mandatory .thumbnail-inner::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 40px 0 0 40px;
+    border-color: transparent transparent transparent #ffffff;
+
+}
+
+.thumbnail.mandatory::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: #ff000061;
+    opacity: 0;
+    transition: opacity .5s 0s;
+}
+
+.thumbnail.alarm::after {
+    opacity: 1;
+}
+
+.selected .thumbnail-inner{
+    background: #3964ff;
+}
+
+.thumbnail-img {
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 160px;
+    height: 120px;
+}
+
+.thumbnail-title {
+    font-size: 16px;
+    margin-top: .5rem;
+    color: white;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.thumbnail-title.text {
+    font-size: 18px;
+    padding: 0 10px;
+}

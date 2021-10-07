@@ -1,0 +1,8 @@
+.idea/
+dist/
+node_modules/
+public/content.zip
+public/content.json
+dev/clm/**
+!dev/clm/test2_1234567890123_0/**
+!dev/clm/test_1234567890123_0/**

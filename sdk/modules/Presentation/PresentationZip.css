@@ -1,0 +1,30 @@
+#iFrame-wrapper {
+    top: 0;
+    z-index: -3;
+    height: 0;
+    transform-origin: left top;
+    width: 1024px;
+    transform: scale(0.883789);
+    left: 0;
+    position: absolute;
+}
+
+#iFrame-wrapper.error {
+    position: static;
+    transform-origin: unset;
+    width: auto;
+    height: auto;
+    margin-top: 60px;
+    color: white;
+    font-size: 24px;
+}
+
+#slide-loader {
+    position: absolute;
+    width: 54px;
+    height: 54px;
+    display: block;
+    top: calc(50% - 27px);
+    left: calc(50% - 27px);
+    z-index: 10;
+}

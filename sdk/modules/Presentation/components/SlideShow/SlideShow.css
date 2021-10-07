@@ -1,0 +1,39 @@
+#slideshow {
+    position: absolute;
+    bottom: -300px;
+    left: 0;
+    padding: 10px;
+    width: 100%;
+    background-color: #000000ba;
+    z-index: 25;
+}
+
+.slideshow-inner {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+#slideshow-type-switcher {
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-basis: 33.33%;
+    justify-content: center;
+}
+
+#slideshow-type-switcher img {
+    width: 100%;
+    height: auto;
+}
+
+#slideshow-picker-icon.hide {
+    display: none;
+}
+
+.thumbs {
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 10px;
+}
