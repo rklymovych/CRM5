@@ -5,7 +5,7 @@ import './SlideShow.css';
 import {Presentation} from "../../Presentation";
 import {PresentationThumbs} from "../PresentationThumbs/PresentationThumbs";
 import {SlidesThumbs} from "../SlidesThumbs/SlidesThumbs";
-import {ButtonSlideShow} from "../ButtonSlideShow/ButtonSlideShow";
+import {ButtonSlideShow, StartSlideShow} from "../ButtonSlideShow/ButtonSlideShow";
 import {TitleCountPresentation} from "../TitleCountPresentation/TitleCountPresentation";
 import StorageSvc from "../../../../shared/storage.service";
 import ModalMessage from "../ModalMessage/ModalMessage";
@@ -27,6 +27,8 @@ export class SlideShow extends BaseElement {
     private _isTrackingPaused: boolean;
     private _isShow: boolean = false;
     public subscriptions: Subscription[] = [];
+    public isPausedScreenSharing: boolean = false;
+    public slideShowBtn: StartSlideShow;
 
     constructor(
         params: ISlideShow,
@@ -158,7 +160,8 @@ export class SlideShow extends BaseElement {
         });
 
         if (StorageSvc.isRemoteMode()) {
-            this.getEndButton(extraButtons)
+            this.getEndButton(extraButtons);
+            this.slideShowBtn = this.startSlideshow(extraButtons);
         } else {
             this.getCancelButton(extraButtons);
         }
@@ -387,6 +390,24 @@ export class SlideShow extends BaseElement {
                     clmData: StorageSvc.getCLMData(),
                     clickStreamMetrics: StorageSvc.getClickStreamData()
                 });
+            }
+        })
+    }
+
+    private startSlideshow(container: HTMLDivElement): StartSlideShow {
+        return new StartSlideShow({
+            text: StorageSvc.getLabel('Start'),
+            textActive: StorageSvc.getLabel('Finish'),
+            name: 'start-slide',
+            classes: 'start-slide',
+            container,
+            clickFn: (e, _this) => {
+                _this.toggleName();
+                if (this.isPausedScreenSharing) {
+                    console.log('slider has been stopped annual')
+                    clearInterval(this._presentation.interval)
+                }
+                this._presentation.startSlider({isPaused: this.isPausedScreenSharing})
             }
         })
     }

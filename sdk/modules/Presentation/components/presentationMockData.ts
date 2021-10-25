@@ -81,7 +81,7 @@ export const sendInitMessageWithMockPresentationData = () => {
                                 "key": "test2_1234567890123_0.zip",
                                 "id": "a4u1m0000004CQ6AAM",
                                 "externalId": "a4w1m00000001wyAAA",
-                                "is_mandatory": true
+                                "is_mandatory": false
                             }, {
                                 "fileId": "a4u1m0000004CQ6AAM",
                                 "key": "test_1234567890123_0.zip",
@@ -99,7 +99,7 @@ export const sendInitMessageWithMockPresentationData = () => {
                                 "key": "test2_1234567890123_0.zip",
                                 "id": "a4u1m0000004CQ6AAM",
                                 "externalId": "a4w1m00000001wyAAA",
-                                "is_mandatory": true
+                                "is_mandatory": false
                             },
                             {
                                 "fileId": "a4u1m0000004CQ6AAM",

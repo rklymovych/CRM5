@@ -11,5 +11,6 @@ export interface ISlide {
     sequenceName: string
     sequencePath: string
     isMandatory: boolean
-    isViewed?: boolean
+    isViewed?: boolean,
+    numberOfSlides?: string
 }
