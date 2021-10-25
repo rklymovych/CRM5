@@ -12,7 +12,8 @@ export interface ICollectClmData {
     slide: string
     usageDuration: string
     usageStartTime: string
-    usageEndTime: string
+    usageEndTime: string,
+    numberOfSlide: string
 }
 
 export interface ICollectViewerData {

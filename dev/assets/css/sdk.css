@@ -180,6 +180,16 @@ iframe {
     top: 49%;
     right: 5%;
 }
+.arrow.next-sequences {
+    background-image: url("../images/arrow-right.svg");
+    top: 30%;
+    right: 5%;
+}
+.arrow.next-presentation {
+    background-image: url("../images/arrow-right.svg");
+    top: 40%;
+    right: 5%;
+}
 
 .arrow.left {
     background-image: url("../images/arrow-left.svg");

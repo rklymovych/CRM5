@@ -209,7 +209,8 @@ export class CollectData {
             slide: data.slide.path || '',
             usageDuration: duration.toString(),
             usageStartTime: startTime.toJSON(),
-            usageEndTime: stopTime.toJSON()
+            usageEndTime: stopTime.toJSON(),
+            numberOfSlide: data.numberOfSlides
         }
     }
 

@@ -52,6 +52,7 @@ export class Presentation {
     private _StorageSvc = StorageSvc;
     private _iFrame: any;
     private _CLMPath: string;
+    public interval: any
 
     private _actions: any = {
         init: 'init',
@@ -249,12 +250,39 @@ export class Presentation {
                 case this._actions.remoteParticipantsUpdated:
                     this._participantService.onUpdate(result.response);
                     break;
+                case this._actions.isScreenSharingState:
+                    this.startSlider(result.response);
+                    break;
 
             }
         } catch (e) {
             console.error(e);
         }
     };
+
+    public startSlider(response: any) {
+        let listSlides = StorageSvc.getListSlides();
+
+        if (!response.isPaused) {
+            this.interval = setInterval(() => {
+                this._gotoNextSlide()
+                let index = StorageSvc.getCurrentSlide()
+                index = index + 1
+
+                if (index === listSlides.length) {
+                    console.log('slider has been stopped automatically')
+                    this._SlideShow.isPausedScreenSharing = false
+                    this._SlideShow.slideShowBtn.toggleName();
+
+                    Api.sendToParent({request: 'slideShowEnded'})
+                    clearInterval(this.interval)
+                }
+            }, 3010);
+        }
+
+        this._SlideShow.isPausedScreenSharing = !response.isPaused;
+    }
+
 
     private _checkMessageResultStatus(result: any) {
         if (!result.status || result.status !== 'success') {
@@ -391,9 +419,25 @@ export class Presentation {
             },
             clickRight: () => {
                 this._gotoNextSlide();
-            }
+            },
+            clickNextPresentation: () => {
+                this._goToNextPresentation();
+            },
+            clickNextSequence: () => {
+                this._goToNextSequence()
+            },
         });
     }
+
+    private _goToNextSequence() {
+        const currentSlide = StorageSvc.getCurrentSlide()
+        let slides = StorageSvc.getListSlides();
+        const currentSequenceIndex = slides[currentSlide].sequenceIndex
+        const element = slides.find((seqId: any) => {
+            return seqId.sequenceIndex > currentSequenceIndex
+        })
+        this.changeSlide(element ? element.id : slides[0].id)
+    };
 
     private _gotoPrevSlide() {
         if (StorageSvc.getListSlides()[StorageSvc.getCurrentSlide() - 1]) {
@@ -408,6 +452,14 @@ export class Presentation {
             return;
         }
     };
+
+    private _goToNextPresentation() {
+        let index = StorageSvc.getCurrentPresentation();
+        let presentationLength = StorageSvc.getPresentations().length
+        index = index + 1
+        if (index === presentationLength) index = 0;
+        this._eventService.PresentationChange(index);
+    }
 
     private _setBottomSlidePickerClickAreaHeight(){
         const player = <HTMLIFrameElement>document.getElementById(this._player.htmlContainerId);
@@ -623,6 +675,7 @@ export class Presentation {
         const clmData = StorageSvc.getCLMData();
 
         const slideData = {
+            numberOfSlides: `${slide.id + 1}/${StorageSvc.getListSlides().length}`,
             type: EventTypes.LOAD_SLIDE,
             presentationIdentifier: slide.presentationId,
             presentationName: slide.presentationName,

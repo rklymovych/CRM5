@@ -49,3 +49,25 @@ export class ButtonSlideShow extends BaseElement {
         this._setBtnClassIsActive();
     }
 }
+
+interface ISlideShow extends IButtonSlideShow {
+    textActive?: string;
+}
+
+export class StartSlideShow extends ButtonSlideShow {
+    public _textActive: string;
+    public _textInactive: string;
+
+    constructor({textActive, ...params}: ISlideShow) {
+        super(params);
+        this._textActive = textActive;
+        this._textInactive = params.text;
+        this.isActive = false;
+    }
+
+    public toggleName() {
+        this.element.innerText = this._textActive;
+        this.element.innerText = this.isActive ? this._textInactive :this._textActive;
+        this.toggleActive()
+    }
+}
